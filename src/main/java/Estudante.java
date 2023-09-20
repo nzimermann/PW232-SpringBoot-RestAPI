@@ -19,13 +19,8 @@ public class Estudante {
     @Column(name = "nome")
     private String nome;
 
-    @ManyToMany
-    @JoinTable(
-        name = "matricula",
-        joinColumns = @JoinColumn(name = "estudante_id"),
-        inverseJoinColumns = @JoinColumn(name = "classes_id")
-    )
-    Set<Classes> estudanteMatricula;
+    @ManyToMany(mappedBy = "estudante")
+    Set<Matricula> estudanteMatricula;
 
     public Integer getId() {
         return id;

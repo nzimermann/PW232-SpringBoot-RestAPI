@@ -20,8 +20,8 @@ public class Classes {
     @Column(name = "descrisao")
     private String descrisao;
 
-    @ManyToMany(mappedBy = "matricula")
-    Set<Estudante> classesMatricula;
+    @ManyToMany(mappedBy = "classes")
+    Set<Matricula> classesMatricula;
 
     public Integer getClassesID() {
         return classesID;
