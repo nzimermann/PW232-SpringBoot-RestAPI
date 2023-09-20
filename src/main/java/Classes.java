@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,7 +21,7 @@ public class Classes {
     @Column(name = "descrisao")
     private String descrisao;
 
-    @ManyToMany(mappedBy = "classes")
+    @OneToMany(mappedBy = "classes")
     Set<Matricula> classesMatricula;
 
     public Integer getClassesID() {
