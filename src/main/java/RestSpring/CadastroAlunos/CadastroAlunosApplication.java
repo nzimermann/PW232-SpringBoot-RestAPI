@@ -16,16 +16,21 @@ public class CadastroAlunosApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(RepositoryEstudante repository) {
+	CommandLineRunner init(RepositoryAula repository) {
 		return args -> {
-			//repository.deleteAll();
+			repository.deleteAll();
 			IntStream.range(4, 7)
 			.mapToObj(i -> {
+				Aula a = new Aula();
+				a.setId(i);
+				a.setMateria("Materia"+i);
+				a.setDescricao("Descricao");
+
 				Estudante e = new Estudante();
 				e.setId(i);
 				e.setNome("Estudante" + i);
 				e.setIdade(i);
-				return e;
+				return a;
 			})
 			.map(v -> repository.save(v))
 			.forEach(System.out::println);
