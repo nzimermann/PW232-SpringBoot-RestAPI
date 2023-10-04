@@ -14,10 +14,26 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class Aula {
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String materia;
 	private String descricao;
+	public String getMateria() {
+		return materia;
+	}
+	public void setMateria(String materia) {
+		this.materia = materia;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public void setId(int i) {
+		// TODO Auto-generated method stub
+		this.id = i;
+	}
 }

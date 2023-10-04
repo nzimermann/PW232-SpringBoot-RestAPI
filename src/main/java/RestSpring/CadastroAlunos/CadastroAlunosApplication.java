@@ -25,9 +25,8 @@ public class CadastroAlunosApplication {
 				a.setId(i);
 				a.setMateria("Materia"+i);
 				a.setDescricao("Descricao");
-
 				Estudante e = new Estudante();
-				e.setId(i);
+				//e.setId(i);
 				e.setNome("Estudante" + i);
 				e.setIdade(i);
 				return a;
