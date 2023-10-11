@@ -19,16 +19,20 @@ public class CadastroAlunosApplication {
 	CommandLineRunner init(RepositoryAula repository) {
 		return args -> {
 			repository.deleteAll();
-			IntStream.range(4, 7)
+			IntStream.range(1, 4)
 			.mapToObj(i -> {
 				Aula a = new Aula();
-				a.setId(i);
+				Estudante e = new Estudante();
+			//	e.setId(i);
+				e.setIdade(i);
+				e.setNome("Estudante" + i);
+				//a.setId(i);
 				a.setMateria("Materia"+i);
 				a.setDescricao("Descricao");
-				Estudante e = new Estudante();
-				//e.setId(i);
-				e.setNome("Estudante" + i);
-				e.setIdade(i);
+				a.addEstudante(e);
+
+				e.addAula(a);
+				
 				return a;
 			})
 			.map(v -> repository.save(v))

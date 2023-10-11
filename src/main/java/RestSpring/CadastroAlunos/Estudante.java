@@ -2,6 +2,11 @@ package RestSpring.CadastroAlunos;
 
 //import org.springframework.data.annotation.Id;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class Estudante {
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Integer id;
 
@@ -32,6 +37,14 @@ public class Estudante {
 	}
 	public void setIdade(int idade) {
 		this.idade = idade;
+	}
+	@ManyToMany(mappedBy = "estudantes")
+	private Set<Aula> aulas = new HashSet<Aula>();
+	public void addAula(Aula a) {
+		this.aulas.add(a);
+	}
+	public Set<Aula> getAulas() {
+		return aulas;
 	}
 	
 	
