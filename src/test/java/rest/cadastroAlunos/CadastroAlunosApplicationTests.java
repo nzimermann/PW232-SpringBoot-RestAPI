@@ -1,4 +1,4 @@
-package RestSpring.CadastroAlunos;
+package rest.cadastroAlunos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
