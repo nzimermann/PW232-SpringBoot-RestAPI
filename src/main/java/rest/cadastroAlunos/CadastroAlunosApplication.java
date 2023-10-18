@@ -18,8 +18,9 @@ public class CadastroAlunosApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(AlunoRepository alunoRepository, 
-										DisciplinaRepository disciplinaRepository) {
+	CommandLineRunner commandLineRunner(
+		AlunoRepository alunoRepository,
+		DisciplinaRepository disciplinaRepository) {
 		return args -> {
 			alunoRepository.save(new Aluno("Aluno", "aluno@mail.com", 20));
 			alunoRepository.save(new Aluno("Aluna", "aluna@mail.com", 19));
