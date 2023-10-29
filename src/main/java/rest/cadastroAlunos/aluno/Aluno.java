@@ -64,6 +64,10 @@ public class Aluno {
 		return this.idade;
 	}
 
+	List<Disciplina> getDisciplinas() {
+		return this.disciplinas;
+	}
+
 	private void setId(Integer id) {
 		if (id < 1) {
 			throw new InvalidParameterException("ID deve ser maior que 0");

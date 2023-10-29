@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import rest.cadastroAlunos.aluno.Aluno;
 import rest.cadastroAlunos.aluno.AlunoRepository;
 
 @RestController
@@ -32,6 +33,19 @@ public class DisciplinaController {
 	@GetMapping("/disciplina{id}")
 	public Disciplina getDisciplina(@PathVariable("id") Integer id) {
 		return disciplinaRepository.findById(id).orElse(null);
+	}
+
+	@GetMapping("/disciplina{id}/alunos")
+	public List<Aluno> getDisciplinaAlunos(@PathVariable("id") Integer id) {
+		return getDisciplina(id).getAlunos();
+	}
+
+	@GetMapping("/disciplina{id}/nome")
+	public String getDisciplinaNome(@PathVariable("id") Integer id) {
+		if (getDisciplina(id) == null) {
+			throw new IllegalArgumentException("Id invalido");
+		}
+		return getDisciplina(id).getNome();
 	}
 
 	@PostMapping("/disciplina")
