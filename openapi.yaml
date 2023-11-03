@@ -1,0 +1,512 @@
+openapi: 3.0.3
+info:
+  title: Cadastro de estudante - RESTful API
+  version: '1.0'
+
+servers:
+  - url: http://127.0.0.1:8080/
+
+tags:
+  - name: Usuário
+    description: Registro e authenticação de usuário
+  - name: Aluno
+    description: Operações de aluno
+  - name: Disciplina
+    description: Operações com disciplinas
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Usuário
+      summary: Registre um usuário
+      description: Registra um novo usuário no sistema
+      operationId: register
+      requestBody:
+        description: Cria um novo usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registro'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Registro'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Required request body
+  /auth/authenticate:
+    post:
+      tags:
+        - Usuário
+      summary: Autentique um usuário
+      description: Autentique um usuário para conseguir o token de acesso
+      operationId: authenticate
+      requestBody:
+        description: Cria um novo usuário
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Autenticacao'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Autenticacao'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Required request body
+  /aluno:
+    get:
+      tags:
+        - Aluno
+      summary: Lista todos os alunos
+      description: Retorna uma lista com todos os objetos de alunos cadastrados
+      operationId: getAlunos
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Aluno'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Aluno
+      summary: Adiciona um aluno
+      description: Cadastra um novo aluno no sistema
+      operationId: cadastrarAluno
+      requestBody:
+        description: Cria um novo aluno
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Aluno'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Aluno'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Aluno não encontrado <br>`ou`<br> Email ja cadastrado
+      security:
+      - bearerAuth: []
+  /aluno{id}:
+    get:
+      tags:
+        - Aluno
+      summary: Retorna um aluno
+      description: Retorna um objeto de um aluno
+      operationId: getAluno
+      parameters:
+        - name: id
+          in: path
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aluno'
+        '404':
+          description: Aluno não encontrado
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Aluno
+      summary: Atualiza um aluno
+      description: Atualiza informações de um aluno no sistema
+      operationId: updateAluno
+      requestBody:
+        description: Cria um novo aluno
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Aluno'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Aluno'
+      parameters:
+        - name: id
+          in: path
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: ID deve ser informado <br>`ou`<br> Aluno não encontrado
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Aluno
+      summary: Deleta um aluno
+      description: Deleta o cadastro de um aluno
+      operationId: deleteAluno
+      parameters:
+        - name: id
+          in: path
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: successful operation
+      security:
+        - bearerAuth: []
+  /aluno{id}/email:
+    get:
+      tags:
+        - Aluno
+      summary: Retorna o email do aluno
+      description: Retorna o email do aluno
+      operationId: getAlunoEmail
+      parameters:
+        - name: id
+          in: path
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain; charset=utf-8:
+              example: 'aluno@gmail.com'
+        '404':
+          description: Aluno não encontrado
+      security:
+        - bearerAuth: []
+  /aluno{id}/disciplinas:
+    get:
+      tags:
+        - Aluno
+      summary: Disciplinas do aluno
+      description: Retorna uma lista das disciplinas na qual o aluno está matriculado
+      operationId: getAlunoDisciplinas
+      parameters:
+        - name: id
+          in: path
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Disciplina'
+        '404':
+          description: Aluno não encontrado
+      security:
+        - bearerAuth: []
+  /disciplina:
+    get:
+      tags:
+        - Disciplina
+      summary: Lista todas as disciplinas
+      description: Retorna uma lista com todos os objetos de disciplinas cadastradas
+      operationId: getDisciplinas
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Disciplina'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Disciplina
+      summary: Adiciona uma disciplina
+      description: Cadastra uma nova disciplina no sistema
+      operationId: addDisciplina
+      requestBody:
+        description: Cria uma nova disciplina
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Disciplina'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Disciplina'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Nome já cadastrado
+      security:
+      - bearerAuth: []
+  /disciplina{id}:
+    get:
+      tags:
+        - Disciplina
+      summary: Retorna uma disciplina
+      description: Retorna um objeto de uma disciplina
+      operationId: getDisciplina
+      parameters:
+        - name: id
+          in: path
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disciplina'
+        '404':
+          description: Disciplina não encontrada
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Disciplina
+      summary: Atualiza uma disciplina
+      description: Atualiza informações de uma disciplina
+      operationId: updateDisciplina
+      parameters:
+        - name: id
+          in: path
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: Informa o que deve ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Disciplina'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Disciplina'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: ID deve ser informado <br>`ou`<br> Disciplina não encontrada
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Disciplina
+      summary: Deleta uma disciplina
+      description: Deleta o cadastro de uma disciplina
+      operationId: deleteDisciplina
+      parameters:
+        - name: id
+          in: path
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        default:
+          description: successful operation
+      security:
+        - bearerAuth: []
+  /disciplina{id}/nome:
+    get:
+      tags:
+        - Disciplina
+      summary: Retorna o nome da disciplina
+      description: Retorna o nome da disciplina
+      operationId: getDisciplinaNome
+      parameters:
+        - name: id
+          in: path
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain; charset=utf-8:
+              example: 'Geografia'
+        '404':
+          description: Disciplina não encontrada
+      security:
+        - bearerAuth: []
+  /disciplina{id}/alunos:
+    get:
+      tags:
+        - Disciplina
+      summary: Alunos matriculados na disciplina
+      description: Retorna uma lista dos alunos matriculados naquela disciplina
+      operationId: getDisciplinaAlunos
+      parameters:
+        - name: id
+          in: path
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Aluno'
+        '404':
+          description: Disciplina não encontrada
+      security:
+        - bearerAuth: []
+  /disciplina@addAlunoDisciplina:
+    post:
+      tags:
+        - Disciplina
+      summary: Matricula um aluno em uma disciplina
+      description: Matricula um aluno em uma disciplina
+      operationId: addAlunoDisciplina
+      parameters:
+        - name: disciplina_id
+          in: query
+          description: Identificador da disciplina
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: aluno_id
+          in: query
+          description: Identificador do aluno
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Aluno não encontrado <br>`ou`<br>Disciplina não encontrada
+      security:
+        - bearerAuth: []
+
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        Token:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+          xml:
+            name: 'token'
+    Registro:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: 'Fulano'
+        email:
+          type: string
+          example: 'fulano@gmail.com'
+        senha:
+          type: string
+          example: 'senha_123456'
+      xml:
+        name: registro
+    Autenticacao:
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'fulano@gmail.com'
+        senha:
+          type: string
+          example: 'senha_123456'
+      xml:
+        name: authenticacao
+    Aluno:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: 'Aluno'
+        email:
+          type: string
+          example: 'aluno@gmail.com'
+        idade:
+          type: integer
+          format: int32
+          example: 18
+      xml:
+        name: aluno
+    Disciplina:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: 'Geografia'
+        descricao:
+          type: string
+          example: 'Descrição geografia'
+      xml:
+        name: disciplina
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Insira o token com o prefixo `Bearer `, exemplo -> "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ik"
