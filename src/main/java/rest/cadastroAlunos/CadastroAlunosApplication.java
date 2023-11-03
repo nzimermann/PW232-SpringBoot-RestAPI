@@ -22,10 +22,10 @@ public class CadastroAlunosApplication {
 		AlunoRepository alunoRepository,
 		DisciplinaRepository disciplinaRepository) {
 		return args -> {
-			alunoRepository.save(new Aluno("Aluno", "aluno@mail.com", 20));
-			alunoRepository.save(new Aluno("Aluna", "aluna@mail.com", 19));
-			disciplinaRepository.save(new Disciplina("Geografia", "descricao geografia"));
-			disciplinaRepository.save(new Disciplina("Biologia", "descricao biologia"));
+			alunoRepository.save(Aluno.builder().nome("Aluno").email("aluno@mail.com").idade(20).build());
+			alunoRepository.save(Aluno.builder().nome("Aluna").email("aluna@mail.com").idade(19).build());
+			disciplinaRepository.save(Disciplina.builder().nome("Geografia").descricao("descricao geografia").build());
+			disciplinaRepository.save(Disciplina.builder().nome("Biologia").descricao("descricao biologia").build());
 		};
 	}
 }

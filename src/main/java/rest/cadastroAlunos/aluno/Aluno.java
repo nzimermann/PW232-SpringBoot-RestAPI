@@ -1,8 +1,6 @@
 package rest.cadastroAlunos.aluno;
 
-import java.security.InvalidParameterException;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +8,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import rest.cadastroAlunos.disciplina.Disciplina;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="aluno")
 public class Aluno {
@@ -31,68 +37,6 @@ public class Aluno {
 	private Integer idade;
 
 	@ManyToMany(mappedBy = "alunos")
+	@Getter(lombok.AccessLevel.PROTECTED)
 	private List<Disciplina> disciplinas;
-
-	public Aluno() {}
-
-	public Aluno(Integer id, String nome, String email, Integer idade) {
-		this.setId(id);
-		this.setNome(nome);
-		this.setEmail(email);
-		this.setIdade(idade);
-	}
-
-	public Aluno(String nome, String email, Integer idade) {
-		this.setNome(nome);
-		this.setEmail(email);
-		this.setIdade(idade);
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public String getNome() {
-		return this.nome;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public Integer getIdade() {
-		return this.idade;
-	}
-
-	List<Disciplina> getDisciplinas() {
-		return this.disciplinas;
-	}
-
-	private void setId(Integer id) {
-		if (id < 1) {
-			throw new InvalidParameterException("ID deve ser maior que 0");
-		}
-		this.id = id;
-	}
-
-	protected void setNome(String nome) {
-		if (nome == null || nome.trim().isEmpty()) {
-			throw new InvalidParameterException("Nome deve ser preenchido");
-		}
-		this.nome = nome;
-	}
-
-	protected void setEmail(String email) {
-		if (email == null || email.trim().isEmpty()) {
-			throw new InvalidParameterException("Email deve ser preenchido");
-		}
-		this.email = email;
-	}
-
-	protected void setIdade(Integer idade) {
-		if (idade < 1 || idade > 130) {
-			throw new InvalidParameterException("Idade invalida");
-		}
-		this.idade = idade;
-	}
 }

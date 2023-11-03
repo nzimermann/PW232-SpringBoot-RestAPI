@@ -1,6 +1,5 @@
 package rest.cadastroAlunos.disciplina;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,9 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import rest.cadastroAlunos.aluno.Aluno;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="disciplina")
 public class Disciplina {
@@ -32,62 +40,15 @@ public class Disciplina {
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="aluno_disciplina", joinColumns = {@JoinColumn(name="disciplina.id")}, inverseJoinColumns = {@JoinColumn(name="aluno.id")})
+	@Getter(lombok.AccessLevel.PROTECTED)
+	@Setter(lombok.AccessLevel.PROTECTED)
 	private List<Aluno> alunos;
 
-	public Disciplina() {}
-
-	public Disciplina(Integer id, String nome, String descricao) {
-		this.setId(id);
-		this.setNome(nome);
-		this.setDescricao(descricao);
-	}
-
-	public Disciplina(String nome, String descricao)  {
-		this.setNome(nome);
-		this.setDescricao(descricao);
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public String getNome() {
-		return this.nome;
-	}
-
-	public String getDescricao() {
-		return this.descricao;
-	}
-
-	protected List<Aluno> getAlunos() {
-		return this.alunos;
-	}
-
-	private void setId(Integer id) {
-		if (id < 1) {
-			throw new InvalidParameterException("ID deve ser maior que 0");
-		}
-		this.id = id;
-	}
-
-	protected void setNome(String nome) {
-		if (nome == null || nome.trim().isEmpty()) {
-			throw new InvalidParameterException("Nome deve ser preenchido");
-		}
-		this.nome = nome;
-	}
-
-	protected void setDescricao(String descricao) {
-		if (descricao == null || descricao.trim().isEmpty()) {
-			throw new InvalidParameterException("Nome deve ser preenchido");
-		}
-		this.descricao = descricao;
-	}
-
 	protected void addAluno(Aluno aluno) {
+		alunos.forEach(a -> {System.out.println(a.getEmail());}); // TODO
 		if (aluno == null) {
 			throw new IllegalArgumentException("Aluno nulo");
 		}
-		alunos.add(aluno);
+		this.alunos.add(aluno);
 	}
 }
